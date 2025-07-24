@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="JetBrains.Annotations" Version="2025.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.7" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="RabbitMQ.Client">
+        <HintPath>..\..\..\.nuget\packages\rabbitmq.client\7.1.2\lib\net8.0\RabbitMQ.Client.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>
