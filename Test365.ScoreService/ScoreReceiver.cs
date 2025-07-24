@@ -11,13 +11,13 @@ internal class ScoreReceiver(ScoresService scoresService, IConnection connection
     public async Task RunAsync(CancellationToken ct)
     {
         await using var channel = await connection.CreateChannelAsync(cancellationToken: ct);
-        await channel.QueueDeclareAsync(queue: RabbbitConsts.NewScoresQueue, durable: true, exclusive: false,
+        await channel.QueueDeclareAsync(queue: RabbitConsts.NewScoresQueue, durable: true, exclusive: false,
             autoDelete: false, arguments: null, cancellationToken: ct);
         
         await channel.BasicQosAsync(prefetchSize: 0, prefetchCount: 1, global: false, cancellationToken: ct);
         var consumer = new AsyncEventingBasicConsumer(channel);
         consumer.ReceivedAsync += ScoreMessageHandler;
-        await channel.BasicConsumeAsync(RabbbitConsts.NewScoresQueue, autoAck: false, consumer: consumer, cancellationToken: ct);
+        await channel.BasicConsumeAsync(RabbitConsts.NewScoresQueue, autoAck: false, consumer: consumer, cancellationToken: ct);
         while (!ct.IsCancellationRequested)
         {
             await Task.Delay(TimeSpan.FromMilliseconds(200), ct);
@@ -38,14 +38,14 @@ internal class ScoreReceiver(ScoresService scoresService, IConnection connection
                 }
 
                 //emulating like it's slow
-                await Task.Delay(TimeSpan.FromMicroseconds(new Random().Next(0, 600)));
+                await Task.Delay(TimeSpan.FromMicroseconds(new Random().Next(0, 600)), ct);
                 await scoresService.SaveAsync(score, CancellationToken.None);
-                await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false);
+                await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false, cancellationToken: ct);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false);
+                await channel.BasicNackAsync(ea.DeliveryTag, multiple: false, requeue: false, cancellationToken: ct);
             }
         }
     }

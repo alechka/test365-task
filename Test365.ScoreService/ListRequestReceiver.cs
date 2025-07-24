@@ -6,7 +6,7 @@ using Test365.Common;
 
 namespace Test365.ScoreService;
 
-internal class ListReceiver(ScoresService scoresService, IConnection connection)
+internal class ListRequestReceiver(ScoresService scoresService, IConnection connection)
 {
     public async Task RunAsync(CancellationToken ct)
     {
@@ -55,21 +55,19 @@ internal class ListReceiver(ScoresService scoresService, IConnection connection)
                     CorrelationId = ea.BasicProperties.CorrelationId,
                 };
 
-                await channel.BasicPublishAsync(exchange: RabbbitConsts.GatherExchange, routingKey: ea.BasicProperties.ReplyTo ?? string.Empty,
+                await channel.BasicPublishAsync(exchange: RabbitConsts.GatherExchange, routingKey: ea.BasicProperties.ReplyTo ?? string.Empty,
                     mandatory: true, basicProperties: responseProps, body: responseBytes, cancellationToken: ct);
-                
-                //await channel.BasicAckAsync(deliveryTag: ea.DeliveryTag, multiple: false, cancellationToken: ct);
             }
         }
     }
 
     private static async Task<string> SetupExchangesAndQueue(CancellationToken ct, IChannel channel)
     {
-        await channel.ExchangeDeclareAsync(exchange: RabbbitConsts.ScatterExchange, type: ExchangeType.Fanout, cancellationToken: ct);
-        await channel.ExchangeDeclareAsync(exchange: RabbbitConsts.GatherExchange, ExchangeType.Direct, cancellationToken: ct);
+        await channel.ExchangeDeclareAsync(exchange: RabbitConsts.ScatterExchange, type: ExchangeType.Fanout, cancellationToken: ct);
+        await channel.ExchangeDeclareAsync(exchange: RabbitConsts.GatherExchange, ExchangeType.Direct, cancellationToken: ct);
         
         var queueName = (await channel.QueueDeclareAsync(cancellationToken: ct)).QueueName;
-        await channel.QueueBindAsync(queueName, RabbbitConsts.ScatterExchange, "", cancellationToken: ct);
+        await channel.QueueBindAsync(queueName, RabbitConsts.ScatterExchange, "", cancellationToken: ct);
         return queueName;
     }
 }

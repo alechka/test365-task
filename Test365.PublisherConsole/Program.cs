@@ -17,7 +17,7 @@ var factory = new ConnectionFactory { Uri = new Uri(configuration["ConnectionStr
 await using var connection = await factory.CreateConnectionAsync();
 await using var channel = await connection.CreateChannelAsync();
 
-await channel.QueueDeclareAsync(queue: RabbbitConsts.NewScoresQueue, durable: true, exclusive: false,
+await channel.QueueDeclareAsync(queue: RabbitConsts.NewScoresQueue, durable: true, exclusive: false,
     autoDelete: false, arguments: null);
 
 var rnd = new Random();
@@ -53,7 +53,7 @@ async Task SendScoreAsync(IChannel channel, Score score)
 {
     var json = JsonSerializer.Serialize(score, new JsonSerializerOptions() { WriteIndented = true });
     var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-    await channel.BasicPublishAsync(string.Empty, routingKey: RabbbitConsts.NewScoresQueue, mandatory: true, 
+    await channel.BasicPublishAsync(string.Empty, routingKey: RabbitConsts.NewScoresQueue, mandatory: true, 
         basicProperties: properties, body: bytes);
     
     Console.WriteLine($" [x] Sent {json}");

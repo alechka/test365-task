@@ -26,7 +26,7 @@ services.AddTransient<IDatabase>(x=> redis.GetDatabase());
 await services.SetupRabbitAsync(configuration);
 
 services.AddTransient<ScoreReceiver>();
-services.AddTransient<ListReceiver>();
+services.AddTransient<ListRequestReceiver>();
 var serviceProvider = services.BuildServiceProvider();
 
 var cts = new CancellationTokenSource();
@@ -34,7 +34,7 @@ Console.WriteLine("Starting listeners");
 var scoreReceiver = serviceProvider.GetService<ScoreReceiver>()!;
 var scoreTask = scoreReceiver.RunAsync(cts.Token);
 
-var listReceiver = serviceProvider.GetService<ListReceiver>()!;
+var listReceiver = serviceProvider.GetService<ListRequestReceiver>()!;
 var listReceiverTask =listReceiver.RunAsync(cts.Token);
 
 Console.WriteLine("Press enter to exit");

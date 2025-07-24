@@ -1,6 +1,6 @@
 namespace Test365.Common;
 
-public static class RabbbitConsts
+public static class RabbitConsts
 {
     public const string NewScoresQueue = "new-scores-queue";
     public const string ScoresRoutingKey = "scores";

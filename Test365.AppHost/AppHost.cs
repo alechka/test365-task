@@ -24,9 +24,9 @@ builder.AddProject<Projects.Test365_ApiService>("apiservice")
     .WithReference(rabbitmq)
     .WithHttpHealthCheck("/health");
 
-// var publisher = builder.AddProject<Projects.Test365_PublisherConsole>("pub-console")
-//     .WaitFor(rabbitmq)
-//     .WithReference(rabbitmq);
+var publisher = builder.AddProject<Projects.Test365_PublisherConsole>("pub-console")
+    .WaitFor(rabbitmq)
+    .WithReference(rabbitmq);
 
 var scoreService = builder.AddProject<Projects.Test365_ScoreService>("score-service")
     .WaitFor(rabbitmq)
