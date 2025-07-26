@@ -2,7 +2,7 @@ namespace Test365.PublisherConsole;
 
 public class RandomFromArray : IRandomFromArray
 {
-    private Random _random = new Random();
+    private readonly Random _random = new Random();
     
     /// <summary>
     /// Gets random data from array

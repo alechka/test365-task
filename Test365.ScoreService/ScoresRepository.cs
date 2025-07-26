@@ -35,7 +35,7 @@ public class ScoresRepository : IScoresRepository
             if (!string.IsNullOrWhiteSpace(filter.Sport)) query = query.Where(s=> s.Sport.Contains(filter.Sport));
             if (filter.MinDate != null) query = query.Where(s=> s.Date > filter.MinDate);
             if (filter.MaxDate != null) query = query.Where(s=> s.Date > filter.MaxDate);
-            return query.Take(filter.Take ?? 10).ToList();
+            return query.Take(filter.Take).ToList();
         }
     }
 }

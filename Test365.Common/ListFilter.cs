@@ -16,5 +16,5 @@ public record ListFilter
     
     public DateTime? MaxDate { get; [UsedImplicitly] set; }
     
-    public int? Take { get; set; } = 10;
+    public int Take { get; set; }
 }

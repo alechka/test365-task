@@ -29,6 +29,10 @@ string[] teams =
     "Chelsea", "Barcelona", "Valencia", "El Salvador", "Miami Dolphins", "Buffalo Bills"
 ];
 
+const int maxScore = 5;
+const int delayInSeconds = 1;
+const int maxHoursBefore = 48;
+
 var properties = new BasicProperties
 {
     Persistent = true,
@@ -40,20 +44,20 @@ while (true)
 {
     await SendScoreAsync(channel,
         new Score(randomizer.Get(sports),
-            DateTime.UtcNow.AddHours(-rnd.Next(48)),
+            DateTime.UtcNow.AddHours(-rnd.Next(maxHoursBefore)),
             randomizer.Get(teams), 
             randomizer.Get(teams),
-            rnd.Next(5),
-            rnd.Next(5)));
-    await Task.Delay(TimeSpan.FromSeconds(1));
+            rnd.Next(maxScore),
+            rnd.Next(maxScore)));
+    await Task.Delay(TimeSpan.FromSeconds(delayInSeconds));
 }
 
 
-async Task SendScoreAsync(IChannel channel, Score score)
+async Task SendScoreAsync(IChannel ch, Score score)
 {
     var json = JsonSerializer.Serialize(score, new JsonSerializerOptions() { WriteIndented = true });
     var bytes = System.Text.Encoding.UTF8.GetBytes(json);
-    await channel.BasicPublishAsync(string.Empty, routingKey: RabbitConsts.NewScoresQueue, mandatory: true, 
+    await ch.BasicPublishAsync(string.Empty, routingKey: RabbitConsts.NewScoresQueue, mandatory: true, 
         basicProperties: properties, body: bytes);
     
     Console.WriteLine($" [x] Sent {json}");

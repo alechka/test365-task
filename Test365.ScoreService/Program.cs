@@ -3,7 +3,6 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
 using StackExchange.Redis;
 using Test365.Common;
 using Test365.ScoreService;
@@ -13,6 +12,8 @@ var builder = new ConfigurationBuilder()
 
 var configuration = builder.Build();
 var services = new ServiceCollection();
+
+
 // it's in memory, so this is singleton 
 services.AddSingleton<IDuplicateCheckingService, RedisDuplicateCheckingService>();
 services.AddSingleton<IScoresRepository, ScoresRepository>();
@@ -22,11 +23,11 @@ var redisConnectionString = configuration["ConnectionStrings:cache"];
 Debug.Assert(redisConnectionString != null, nameof(redisConnectionString) + " != null");
 var redis = await ConnectionMultiplexer.ConnectAsync(redisConnectionString);
 services.AddSingleton<IConnectionMultiplexer>(redis);
-services.AddTransient<IDatabase>(x=> redis.GetDatabase());
+services.AddSingleton<IDatabase>(_ => redis.GetDatabase());
 await services.SetupRabbitAsync(configuration);
 
-services.AddTransient<ScoreReceiver>();
-services.AddTransient<ListRequestReceiver>();
+services.AddSingleton<ScoreReceiver>();
+services.AddSingleton<ListRequestReceiver>();
 var serviceProvider = services.BuildServiceProvider();
 
 var cts = new CancellationTokenSource();
@@ -35,7 +36,7 @@ var scoreReceiver = serviceProvider.GetService<ScoreReceiver>()!;
 var scoreTask = scoreReceiver.RunAsync(cts.Token);
 
 var listReceiver = serviceProvider.GetService<ListRequestReceiver>()!;
-var listReceiverTask =listReceiver.RunAsync(cts.Token);
+var listReceiverTask = listReceiver.RunAsync(cts.Token);
 
 Console.WriteLine("Press enter to exit");
 Console.ReadLine();

@@ -36,8 +36,8 @@ if (app.Environment.IsDevelopment())
 
 app.MapGet("/list", async ([AsParameters]ListFilter list, ScoreListService service, CancellationToken cancellationToken) =>
 {
-    await service.ListAsync(list, cancellationToken);
-    return list;
+    var result = await service.ListAsync(list, cancellationToken);
+    return result.Take(list.Take);
 });
 
 app.MapDefaultEndpoints();

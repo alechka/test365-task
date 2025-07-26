@@ -22,6 +22,7 @@ builder.AddProject<Projects.Test365_ApiService>("apiservice")
     })
     .WaitFor(rabbitmq)
     .WithReference(rabbitmq)
+    .WithReplicas(2)
     .WithHttpHealthCheck("/health");
 
 var publisher = builder.AddProject<Projects.Test365_PublisherConsole>("pub-console")

@@ -3,9 +3,13 @@ using System.Text.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Test365.Common;
+// ReSharper disable AccessToDisposedClosure
 
 namespace Test365.ScoreService;
 
+/// <summary>
+/// Receives and save new scores from message broker
+/// </summary>
 internal class ScoreReceiver(ScoresService scoresService, IConnection connection)
 {
     public async Task RunAsync(CancellationToken ct)
@@ -23,6 +27,7 @@ internal class ScoreReceiver(ScoresService scoresService, IConnection connection
             await Task.Delay(TimeSpan.FromMilliseconds(200), ct);
         }
         consumer.ReceivedAsync -= ScoreMessageHandler;
+        return;
         
         async Task ScoreMessageHandler(object model, BasicDeliverEventArgs ea)
         {

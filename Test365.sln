@@ -4,8 +4,6 @@ VisualStudioVersion = 17.8.0.0
 MinimumVisualStudioVersion = 17.8.0.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test365.AppHost", "Test365.AppHost\Test365.AppHost.csproj", "{69D5B9C7-E54D-4089-8A91-5FD4C840A822}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test365.ServiceDefaults", "Test365.ServiceDefaults\Test365.ServiceDefaults.csproj", "{139DFDEC-CED8-4E55-BD8C-A832BC9BB62C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test365.ApiService", "Test365.ApiService\Test365.ApiService.csproj", "{4E3C8C2F-18E4-416E-8AD8-D83F9805CBAB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test365.Common", "Test365.Common\Test365.Common.csproj", "{D926F026-6697-43A7-B836-F82EAD1E73ED}"
@@ -26,10 +24,6 @@ Global
 		{69D5B9C7-E54D-4089-8A91-5FD4C840A822}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69D5B9C7-E54D-4089-8A91-5FD4C840A822}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69D5B9C7-E54D-4089-8A91-5FD4C840A822}.Release|Any CPU.Build.0 = Release|Any CPU
-		{139DFDEC-CED8-4E55-BD8C-A832BC9BB62C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{139DFDEC-CED8-4E55-BD8C-A832BC9BB62C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{139DFDEC-CED8-4E55-BD8C-A832BC9BB62C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{139DFDEC-CED8-4E55-BD8C-A832BC9BB62C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E3C8C2F-18E4-416E-8AD8-D83F9805CBAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E3C8C2F-18E4-416E-8AD8-D83F9805CBAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E3C8C2F-18E4-416E-8AD8-D83F9805CBAB}.Release|Any CPU.ActiveCfg = Release|Any CPU

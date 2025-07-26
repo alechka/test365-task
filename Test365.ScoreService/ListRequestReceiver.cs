@@ -8,6 +8,10 @@ namespace Test365.ScoreService;
 
 internal class ListRequestReceiver(ScoresService scoresService, IConnection connection)
 {
+    /// <summary>
+    /// Runs listener for list requests
+    /// </summary>
+    /// <param name="ct"></param>
     public async Task RunAsync(CancellationToken ct)
     {
         await using var channel = await connection.CreateChannelAsync(cancellationToken: ct);
@@ -55,6 +59,7 @@ internal class ListRequestReceiver(ScoresService scoresService, IConnection conn
                     CorrelationId = ea.BasicProperties.CorrelationId,
                 };
 
+                // ReSharper disable once AccessToDisposedClosure
                 await channel.BasicPublishAsync(exchange: RabbitConsts.GatherExchange, routingKey: ea.BasicProperties.ReplyTo ?? string.Empty,
                     mandatory: true, basicProperties: responseProps, body: responseBytes, cancellationToken: ct);
             }
